@@ -8,13 +8,10 @@ function sub (a, b){
 }
 
 // module.exports = "Parul"
-
-
 module.exports = {   // multiple exports
     addFn:add,  // can rename also
     sub
 }
-
 
 // OTHER WAY
 
