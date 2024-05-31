@@ -1,11 +1,14 @@
 const express = require("express");
 const users = require("./MOCK_DATA.json");
+const fs = require("fs");
 
 const app = express();
 const PORT = 8000;
 
-// GET START
+// middleware - plugin
+app.use(express.urlencoded({extended: false}));
 
+// GET START
 app.get("/users", (req, res) => {
   const html = `
       <ul>
@@ -35,7 +38,6 @@ app.get("/users/:id", (req, res) => {
   `;
   res.send(html);
 });
-
 // GET END
 
 app
@@ -51,5 +53,13 @@ app
   .delete((req, res) => {
     return res.json({status: "Pending"});
   });
+
+app.post("/api/users", (req, res) => {
+  const body = req.body;
+  users.push({...body, id: users.length + 1});
+  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
+    return res.json({status: "success", id: users.length});
+  });
+});
 
 app.listen(PORT, () => console.log("server started here"));
